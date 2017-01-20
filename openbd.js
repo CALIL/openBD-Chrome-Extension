@@ -72,7 +72,21 @@ const parseBook = (book)=>{
   let description = null;
   let descriptionLong = null;
   let tableOfContents = null;
-  book.Product.CollateralDetail.TextContent.forEach((text)=>{
+  console.log(book.Product.CollateralDetail.TextContent)
+  if(book.Product.CollateralDetail.TextContent instanceof Array){
+    book.Product.CollateralDetail.TextContent.forEach((text)=>{
+      if(text.TextType==='02'){
+        description = text.Text.content;
+      }
+      if(text.TextType==='03'){
+        descriptionLong = text.Text.content;
+      }
+      if(text.TextType==='04'){
+        tableOfContents = text.Text.content;
+      }
+    });
+  }else{
+    let text = book.Product.CollateralDetail.TextContent;
     if(text.TextType==='02'){
       description = text.Text.content;
     }
@@ -82,14 +96,22 @@ const parseBook = (book)=>{
     if(text.TextType==='04'){
       tableOfContents = text.Text.content;
     }
-  });
+  }
   // 著者
   let parseAuthor = (author)=>{
-    authors.push({
-      name: author.PersonName.content,
-      yomi: author.PersonName.collationkey,
-      profile: author.BiographicalNote
-    });
+    if(typeof author.PersonName === 'string'){
+      authors.push({
+        name: author.PersonName,
+        yomi: null,
+        profile: author.BiographicalNote
+      });
+    }else{
+      authors.push({
+        name: author.PersonName.content,
+        yomi: author.PersonName.collationkey,
+        profile: author.BiographicalNote
+      });
+    }
   };
   let authors = [];
   if(book.Product.DescriptiveDetail.Contributor instanceof Array){
@@ -119,26 +141,43 @@ const renderBook = (book)=>{
   let content = document.createElement('div');
   content.className = 'openbd_content';
 
+  let authorContent = '';
   // 著者情報の追加
-  let authorContent = '<h2 class="openbd_header">著者</h2>';
-  book.authors.forEach((author)=> {
-    authorContent += `
-    <h3 class="openbd_author_header">${author.name}(${author.yomi})</h3>
-    <div class="openbd_author_profile">${author.profile}</div>
-  `;
-  });
+  if(book.authors.length>0){
+    authorContent = '<h2 class="openbd_header">著者</h2>';
+    book.authors.forEach((author)=> {
+      let authorYomi = author.yomi ? '(' + author.yomi + ')' : '';
+      authorContent += `<h3 class="openbd_author_header">${author.name}${authorYomi}</h3>`;
+      if(author.profile){
+        authorContent += `<div class="openbd_author_profile">${author.profile}</div>`;
+      }
+    });
+  }
 
-  content.innerHTML = `
+  let titleYomi = (book.titleYomi) ? '(' + book.titleYomi + ')' : '';
+  content.innerHTML += `
   <h2 class="openbd_header">タイトル</h2>
-  <div class="openbd_title">${book.title}(${book.titleYomi})</div>
+  <div class="openbd_title">${book.title}${titleYomi}</div>
   <h2 class="openbd_header">ISBN</h2>
   <div class="openbd_title">${book.isbn}</div>
-  <h2 class="openbd_header">紹介</h2>
-  <div class="openbd_description">${book.description}</div>
-  <div class="openbd_description">${book.descriptionLong}</div>
-  <h2 class="openbd_header">目次</h2>
-  <div class="openbd_tableOfContents">${book.tableOfContents}</div>
-  ${authorContent}
+  `;
+  if(book.description || book.descriptionLong){
+    content.innerHTML += '<h2 class="openbd_header">紹介</h2>';
+  }
+  if(book.description){
+    content.innerHTML += `<div class="openbd_description">${book.description}</div>`;
+  }
+  if(book.descriptionLong){
+    content.innerHTML += `<div class="openbd_description">${book.descriptionLong}</div>`;
+  }
+  if(book.tableOfContents){
+    content.innerHTML += `
+    <h2 class="openbd_header">目次</h2>
+    <div class="openbd_tableOfContents">${book.tableOfContents}</div>
+    `;
+  }
+  content.innerHTML += authorContent;
+  content.innerHTML += `
   <div class="openbd_powered">by <a href="https://openbd.jp/" target="_blank">openBD</a></div>
   `;
   if(insert==='after'){
@@ -212,27 +251,26 @@ if (isbn) {
       };
     })
   });
-
 }
 
-// sample api data
-console.log(chrome.extension.getURL('/api.json'))
-superagent
-.get(chrome.extension.getURL('/api.json'))
-.end(function(err, res){
-  if(!err){
-    let data = JSON.parse(res.text);
-    // console.log(data);
-    renderStyle();
-    data.forEach((book)=>{
-      if(book!==null){
-        let b = parseBook(book);
-        b.isbn = isbn;
-        renderBook(b);
-      }
-    });
-  }
-});
+// // sample api data
+// console.log(chrome.extension.getURL('/api.json'))
+// superagent
+// .get(chrome.extension.getURL('/api.json'))
+// .end(function(err, res){
+//   if(!err){
+//     let data = JSON.parse(res.text);
+//     // console.log(data);
+//     renderStyle();
+//     data.forEach((book)=>{
+//       if(book!==null){
+//         let b = parseBook(book);
+//         b.isbn = isbn;
+//         renderBook(b);
+//       }
+//     });
+//   }
+// });
 
 // var injectScript;
 //
