@@ -1,2 +1,2 @@
-# OpenBD-Chrome-Extension
-OpenBD Chrome Extension
+# openBD-Chrome-Extension
+openBD Chrome Extension
