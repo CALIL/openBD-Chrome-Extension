@@ -1,14 +1,14 @@
 // ISBNの抽出
 
-const parseISBN = (query)=> {
+const parseISBN = (isbnSelector)=> {
   let isbn = null;
-  let list = document.querySelectorAll(query)
+  let list = document.querySelectorAll(isbnSelector)
   for(let item of list) {
     let match = item.innerHTML.replace(/-/g, '').match(/[0-9\-]{12}[0-9X]/);
     // console.log(match)
     if (match) {
       isbn = match[0];
-      // break;
+      break;
     }
   };
   return isbn;
@@ -18,35 +18,47 @@ const parseISBN = (query)=> {
 const SITES = [
   {
     url: 'https?://ilisod001.apsel.jp/',
-    query: '.normal-td',
-    targetElement: document.querySelectorAll('.contents')[2]
+    isbnSelector: '.normal-td',
+    targetElement: document.querySelectorAll('.contents')[2],
+    insert: 'after'
+  },
+  {
+    url: 'https?://.*?/opac/wopc/pc/pages/SearchResultList.jsp',
+    isbnSelector: '.normal-td',
+    targetElement: document.querySelectorAll('.contents')[2],
+    insert: 'after'
   },
   {
     url: 'https?://.*?/WebOpac/webopac/searchdetail.do',
-    query: '#highlight_keyword td',
-    targetElement: document.querySelectorAll('#highlight_keyword')[0]
+    isbnSelector: '#highlight_keyword td',
+    targetElement: document.querySelectorAll('#highlight_keyword')[0],
+    insert: 'after'
   },
   {
     url: 'https?://www.amazon.co.jp/?.*?/dp/',
-    query: '.content li',
-    targetElement: document.querySelectorAll('#productDescription_feature_div')[0]
+    isbnSelector: '.content li',
+    targetElement: document.querySelectorAll('#productDescription_feature_div')[0],
+    insert: 'after'
   },
   {
     url: 'https://calil.jp/book/',
-    query: '.bookarea',
-    targetElement: document.querySelectorAll('.bookarea')[2]
+    isbnSelector: '.bookarea',
+    targetElement: document.querySelectorAll('.detailheader')[0],
+    insert: 'before'
   },
 ];
 
 let isbn = null;
 let targetElement = null;
+let insert = null;
 
 SITES.forEach((site)=> {
   let url = site.url.replace(/\//g, '\\/').replace(/\:/g, '\\:');
   // console.log(url);
   if (location.href.match(url)) {
-    isbn = parseISBN(site.query);
+    isbn = parseISBN(site.isbnSelector);
     targetElement = site.targetElement;
+    insert = site.insert;
   }
 });
 
@@ -112,8 +124,8 @@ if (isbn) {
       <h2 class="openbd_header">目次</h2>
       <div class="openbd_tableOfContents">${tableOfContents}</div>
       ${authorContent}
-    `;
-    // body.appendChild(content);
+      `;
+      // body.appendChild(content);
 
       // スタイルの追加
       let style = document.createElement('style');
@@ -150,10 +162,16 @@ if (isbn) {
       .openbd_author_profile {
         font-size: 0.8em
       }
-    `;
-    // body.appendChild(style);
-    targetElement.parentNode.insertBefore(style, targetElement.nextSibling)
-    targetElement.parentNode.insertBefore(content, targetElement.nextSibling)
+      `;
+
+      // body.appendChild(style);
+      if(insert==='after'){
+        targetElement.parentNode.insertBefore(style, targetElement.nextSibling);
+        targetElement.parentNode.insertBefore(content, targetElement.nextSibling);
+      }else if(insert==='before'){
+        targetElement.parentNode.insertBefore(style, targetElement);
+        targetElement.parentNode.insertBefore(content, targetElement);
+      }
 
       // 書誌がみつからない
       if (book === null) return;
