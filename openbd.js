@@ -65,6 +65,8 @@ SITES.forEach((site)=> {
 // 本のデータをパース
 const parseBook = (book)=>{
   // console.log(book.Product);
+  // 書影
+  let thumbnail = null;
   // タイトル
   let title = book.Product.DescriptiveDetail.TitleDetail.TitleElement.TitleText.content;
   let titleYomi = book.Product.DescriptiveDetail.TitleDetail.TitleElement.TitleText.collationkey;
@@ -72,7 +74,10 @@ const parseBook = (book)=>{
   let description = null;
   let descriptionLong = null;
   let tableOfContents = null;
-  console.log(book.Product.CollateralDetail.TextContent)
+  if(book.Product.CollateralDetail.SupportingResource.ResourceVersion.ResourceLink){
+    thumbnail = book.Product.CollateralDetail.SupportingResource.ResourceVersion.ResourceLink;
+  }
+  // console.log(book.Product.CollateralDetail.TextContent)
   if(book.Product.CollateralDetail.TextContent instanceof Array){
     book.Product.CollateralDetail.TextContent.forEach((text)=>{
       if(text.TextType==='02'){
@@ -126,6 +131,7 @@ const parseBook = (book)=>{
   // console.log(authors);
   // console.log(description, descriptionLong, tableOfContents)
   return {
+    thumbnail: thumbnail,
     title: title,
     titleYomi: titleYomi,
     authors: authors,
@@ -154,6 +160,9 @@ const renderBook = (book)=>{
     });
   }
 
+  if(book.thumbnail){
+    content.innerHTML += `<img src="${book.thumbnail}" />`;
+  }
   let titleYomi = (book.titleYomi) ? '(' + book.titleYomi + ')' : '';
   content.innerHTML += `
   <h2 class="openbd_header">タイトル</h2>
