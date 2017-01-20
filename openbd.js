@@ -194,7 +194,52 @@ superagent
 .get(chrome.extension.getURL('/api.json'))
 .end(function(err, res){
   if(!err){
-    console.log(JSON.parse(res.text));
+    let data = JSON.parse(res.text);
+    console.log(data);
+    let title = null;
+    let titleYomi = null;
+    let description = null;
+    let descriptionLong = null;
+    let tableOfContents = null;
+    let authors = [];
+    data.forEach((book)=>{
+      if(book!==null){
+        console.log(book.Product);
+        // タイトル
+        title = book.Product.DescriptiveDetail.TitleDetail.TitleElement.TitleText.content;
+        titleYomi = book.Product.DescriptiveDetail.TitleDetail.TitleElement.TitleText.collationkey;
+        // 紹介・目次
+        book.Product.CollateralDetail.TextContent.forEach((text)=>{
+          if(text.TextType==='02'){
+            description = text.Text.content;
+          }
+          if(text.TextType==='03'){
+            descriptionLong = text.Text.content;
+          }
+          if(text.TextType==='04'){
+            tableOfContents = text.Text.content;
+          }
+        });
+        let parseAuthor = (author)=>{
+          authors.push({
+            name: author.PersonName.content,
+            yomi: author.PersonName.collationkey,
+            profile: author.BiographicalNote
+          });
+        };
+        // 著者
+        if(book.Product.DescriptiveDetail.Contributor instanceof Array){
+          book.Product.DescriptiveDetail.Contributor.forEach((author)=>{
+            parseAuthor(author);
+          });
+        }else{
+          parseAuthor(book.Product.DescriptiveDetail.Contributor);
+        }
+      }
+    });
+    console.log(title, titleYomi);
+    console.log(authors);
+    console.log(description, descriptionLong, tableOfContents)
   }
 });
 
