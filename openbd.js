@@ -131,6 +131,7 @@ const parseBook = (book)=>{
     tableOfContents: tableOfContents,
     isbn: book.summary.isbn,
     publisher: book.summary.publisher,
+    pubdate: book.summary.pubdate.replace(/(\d{4})(\d{2})(\d{2})/g , "$1/$2/$3"),
     author: book.summary.author
   };
 };
@@ -182,7 +183,7 @@ const renderBook = (book)=>{
   <h2 class="openbd_header">ISBN</h2>
   <div class="openbd_isbn">${book.isbn}</div>
   <h2 class="openbd_header">出版社</h2>
-  <div class="openbd_publisher">${book.publisher}</div>
+  <div class="openbd_publisher">${book.publisher} <span class="openbd_pubdate">(${book.pubdate})</span></div>
   `;
   content.innerHTML += `
   <div class="openbd_powered">by <a href="https://openbd.jp/" target="_blank">openBD</a></div>
