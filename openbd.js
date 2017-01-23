@@ -75,12 +75,8 @@ const parseBook = (book)=>{
   let descriptionLong = null;
   let tableOfContents = null;
   // console.log(book.onix.CollateralDetail.SupportingResource)
-  if(book.onix.CollateralDetail.SupportingResource
-    && book.onix.CollateralDetail.SupportingResource[0].ResourceVersion[0]
-    && book.onix.CollateralDetail.SupportingResource[0].ResourceVersion[0].ResourceLink
-  ){
-    // console.log(book.onix.CollateralDetail.SupportingResource[0].ResourceVersion[0].ResourceLink)
-    thumbnail = book.onix.CollateralDetail.SupportingResource[0].ResourceVersion[0].ResourceLink;
+  if(book.summary.cover){
+    thumbnail = book.summary.cover;
   }
   // console.log(book.onix.CollateralDetail.TextContent)
   if(book.onix.CollateralDetail.TextContent){
@@ -127,6 +123,7 @@ const parseBook = (book)=>{
   // console.log(description, descriptionLong, tableOfContents)
   return {
     thumbnail: thumbnail,
+    isbn: book.summary.isbn,
     title: title,
     titleYomi: titleYomi,
     authors: authors,
@@ -251,7 +248,6 @@ if (isbn) {
       // 書誌があれば
       if (book !== null){
         let b = parseBook(book);
-        b.isbn = isbn;
         renderBook(b);
       };
     })
