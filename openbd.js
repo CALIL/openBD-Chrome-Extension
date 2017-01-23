@@ -123,13 +123,15 @@ const parseBook = (book)=>{
   // console.log(description, descriptionLong, tableOfContents)
   return {
     thumbnail: thumbnail,
-    isbn: book.summary.isbn,
     title: title,
     titleYomi: titleYomi,
     authors: authors,
     description: description,
     descriptionLong: descriptionLong,
-    tableOfContents: tableOfContents
+    tableOfContents: tableOfContents,
+    isbn: book.summary.isbn,
+    publisher: book.summary.publisher,
+    author: book.summary.author
   };
 };
 
@@ -159,8 +161,6 @@ const renderBook = (book)=>{
   content.innerHTML += `
   <h2 class="openbd_header">タイトル</h2>
   <div class="openbd_title">${book.title}${titleYomi}</div>
-  <h2 class="openbd_header">ISBN</h2>
-  <div class="openbd_title">${book.isbn}</div>
   `;
   if(book.description || book.descriptionLong){
     content.innerHTML += '<h2 class="openbd_header">紹介</h2>';
@@ -178,6 +178,12 @@ const renderBook = (book)=>{
     `;
   }
   content.innerHTML += authorContent;
+  content.innerHTML += `
+  <h2 class="openbd_header">ISBN</h2>
+  <div class="openbd_isbn">${book.isbn}</div>
+  <h2 class="openbd_header">出版社</h2>
+  <div class="openbd_publisher">${book.publisher}</div>
+  `;
   content.innerHTML += `
   <div class="openbd_powered">by <a href="https://openbd.jp/" target="_blank">openBD</a></div>
   `;
