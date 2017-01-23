@@ -1,10 +1,10 @@
 // 対応サイトの定義
 const SITES = [
   {
-    url: 'https?://ilisod001.apsel.jp/',
-    isbnSelector: '.normal-td',
-    targetElement: document.querySelectorAll('.contents')[2],
-    insert: 'after'
+    url: 'https?://ilisod001.apsel.jp/', // 対象にするURL 正規表現 /(スラッシュ)は\/(バックスラッシュ)付きに置換される
+    isbnSelector: '.normal-td', // ISBNが含まれるエレメントのセレクター 複数のエレメントがマッチするものでも可
+    targetElement: document.querySelectorAll('.contents')[2], // 書誌情報を挿入するエレメント
+    insert: 'after' // after or beofre ターゲットの前後どちらに挿入するか
   },
   {
     url: 'https?://.*?/opac/wopc/pc/pages/SearchResultList.jsp',
@@ -53,7 +53,7 @@ let targetElement = null;
 let insert = null;
 
 SITES.forEach((site)=> {
-  let url = site.url.replace(/\//g, '\\/').replace(/\:/g, '\\:');
+  let url = site.url.replace(/\//g, '\\/');
   // console.log(url);
   if (location.href.match(url)) {
     isbn = parseISBN(site.isbnSelector);
