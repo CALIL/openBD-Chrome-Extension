@@ -64,43 +64,33 @@ SITES.forEach((site)=> {
 
 // 本のデータをパース
 const parseBook = (book)=>{
-  // console.log(book.Product);
+  // console.log(book.onix);
   // 書影
   let thumbnail = null;
   // タイトル
-  let title = book.Product.DescriptiveDetail.TitleDetail.TitleElement.TitleText.content;
-  let titleYomi = book.Product.DescriptiveDetail.TitleDetail.TitleElement.TitleText.collationkey;
+  let title = book.onix.DescriptiveDetail.TitleDetail.TitleElement.TitleText.content;
+  let titleYomi = book.onix.DescriptiveDetail.TitleDetail.TitleElement.TitleText.collationkey;
   // 紹介・目次
   let description = null;
   let descriptionLong = null;
   let tableOfContents = null;
-  if(book.Product.CollateralDetail.SupportingResource.ResourceVersion.ResourceLink){
-    thumbnail = book.Product.CollateralDetail.SupportingResource.ResourceVersion.ResourceLink;
+  if(book.onix.CollateralDetail.SupportingResource instanceof Array){
+    thumbnail = book.onix.CollateralDetail.SupportingResource[0].ResourceVersion.ResourceLink;
   }
-  // console.log(book.Product.CollateralDetail.TextContent)
-  if(book.Product.CollateralDetail.TextContent instanceof Array){
-    book.Product.CollateralDetail.TextContent.forEach((text)=>{
+  // console.log(book.onix.CollateralDetail.TextContent)
+  if(book.onix.CollateralDetail.TextContent){
+    book.onix.CollateralDetail.TextContent.forEach((text)=>{
+      // console.log(text)
       if(text.TextType==='02'){
-        description = text.Text.content;
+        description = text.Text;
       }
       if(text.TextType==='03'){
-        descriptionLong = text.Text.content;
+        descriptionLong = text.Text;
       }
       if(text.TextType==='04'){
-        tableOfContents = text.Text.content;
+        tableOfContents = text.Text;
       }
     });
-  }else{
-    let text = book.Product.CollateralDetail.TextContent;
-    if(text.TextType==='02'){
-      description = text.Text.content;
-    }
-    if(text.TextType==='03'){
-      descriptionLong = text.Text.content;
-    }
-    if(text.TextType==='04'){
-      tableOfContents = text.Text.content;
-    }
   }
   // 著者
   let parseAuthor = (author)=>{
@@ -119,12 +109,12 @@ const parseBook = (book)=>{
     }
   };
   let authors = [];
-  if(book.Product.DescriptiveDetail.Contributor instanceof Array){
-    book.Product.DescriptiveDetail.Contributor.forEach((author)=>{
+  if(book.onix.DescriptiveDetail.Contributor instanceof Array){
+    book.onix.DescriptiveDetail.Contributor.forEach((author)=>{
       parseAuthor(author);
     });
   }else{
-    parseAuthor(book.Product.DescriptiveDetail.Contributor);
+    parseAuthor(book.onix.DescriptiveDetail.Contributor);
   }
 
   // console.log(title, titleYomi);
@@ -209,7 +199,8 @@ const renderStyle = ()=>{
     border-radius: 0.25em;
   }
   .openbd_header {
-    font-size: 1em;
+    font-size: 1.25em;
+    font-weight: bold !important;
     color: #000000;
     margin: 1em 0 0.5em;
   }
@@ -225,12 +216,12 @@ const renderStyle = ()=>{
     background-image: linear-gradient(90deg, #efa8b0, #a89cc8, #8cc9f0);
   }
   .openbd_author_header {
-    font-size: 0.8em;
+    font-size: 1em;
     color: #000000;
     margin: 0.5em 0 0.5em;
   }
   .openbd_author_profile {
-    font-size: 0.8em
+    font-size: 1em
   }
   .openbd_powered, .openbd_powered a {
     color: #999999;
