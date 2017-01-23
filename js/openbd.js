@@ -10,31 +10,31 @@
 const SITES = [
   {
     url: 'https?://ilisod001.apsel.jp/', // 対象にするURL 正規表現 /(スラッシュ)は\/(バックスラッシュ)付きに置換される
-    isbnSelector: '.normal-td', // ISBNが含まれるエレメントのセレクター 複数のエレメントがマッチするものでも可
+    isbnSelector: document.querySelectorAll('.normal-td'), // ISBNが含まれるエレメント 複数でも可
     targetElement: document.querySelectorAll('.contents')[2], // 書誌情報を挿入するエレメント
     insert: 'after' // after or beofre ターゲットの前後どちらに挿入するか
   },
   {
     url: 'https?://.*?/opac/wopc/pc/pages/SearchResultList.jsp',
-    isbnSelector: '.normal-td',
+    isbnSelector: document.querySelectorAll('.normal-td'),
     targetElement: document.querySelectorAll('.contents')[2],
     insert: 'after'
   },
   {
     url: 'https?://.*?/WebOpac/webopac/searchdetail.do',
-    isbnSelector: '#highlight_keyword td',
+    isbnSelector: document.querySelectorAll('#highlight_keyword td'),
     targetElement: document.querySelectorAll('#highlight_keyword')[0],
     insert: 'after'
   },
   {
     url: 'https?://www.amazon.co.jp/?.*?/dp/',
-    isbnSelector: '.content li',
+    isbnSelector: document.querySelectorAll('.content li'),
     targetElement: document.querySelectorAll('#productDescription_feature_div')[0],
     insert: 'after'
   },
   {
     url: 'https://calil.jp/book/',
-    isbnSelector: '.bookarea',
+    isbnSelector: document.querySelectorAll('.bookarea')[2],
     targetElement: document.querySelectorAll('.detailheader')[1],
     insert: 'before'
   },
@@ -43,7 +43,7 @@ const SITES = [
 // ISBNの抽出
 const parseISBN = (isbnSelector)=> {
   let isbn = null;
-  let list = document.querySelectorAll(isbnSelector)
+  let list = isbnSelector.length ? isbnSelector : [isbnSelector];
   for(let item of list) {
     let match = item.innerHTML.replace(/-/g, '').match(/[0-9\-]{12}[0-9X]/);
     // console.log(match)
