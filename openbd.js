@@ -180,10 +180,10 @@ const renderBook = (book)=>{
   }
   content.innerHTML += authorContent;
   content.innerHTML += `
-  <h2 class="openbd_header">ISBN</h2>
-  <div class="openbd_isbn">${book.isbn}</div>
   <h2 class="openbd_header">出版社</h2>
   <div class="openbd_publisher">${book.publisher} <span class="openbd_pubdate">(${book.pubdate})</span></div>
+  <h2 class="openbd_header">ISBN</h2>
+  <div class="openbd_isbn">${book.isbn}</div>
   `;
   content.innerHTML += `
   <div class="openbd_powered">by <a href="https://openbd.jp/" target="_blank">openBD</a></div>
