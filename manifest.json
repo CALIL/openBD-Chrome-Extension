@@ -12,9 +12,9 @@
     {
       "matches": [ "http://*/*", "https://*/*" ],
       "js": [
-        "superagent.js",
-        "api.js",
-        "openbd.js"
+        "js/superagent.js",
+        "js/api.js",
+        "js/openbd.js"
       ]
     }
   ],

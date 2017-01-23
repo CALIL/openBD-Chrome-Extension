@@ -1,3 +1,11 @@
+/*
+ openBD Chrome Extension
+ Copyright (c) 2017 CALIL Inc.
+ This software is released under the MIT License.
+ http://opensource.org/licenses/mit-license.php
+ */
+
+
 // 対応サイトの定義
 const SITES = [
   {

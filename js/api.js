@@ -1,3 +1,10 @@
+/*
+ openBD API
+ Copyright (c) 2017 CALIL Inc.
+ This software is released under the MIT License.
+ http://opensource.org/licenses/mit-license.php
+*/
+
 class api {
   constructor(isbns, callback){
     superagent
