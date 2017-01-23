@@ -1,11 +1,10 @@
-# openBD-Chrome-Extension
-openBD Chrome Extension
+# openBD Chrome Extension
 
 ## これはなに？
 
 [https://openbd.jp/](https://openbd.jp/)
 
-書誌情報・書影を、だれでも自由に使える、高速なAPIとして提供するopenBDプロジェクトの書誌情報を、対応サイトの本のページに表示するChrome用の機能拡張です。
+openBDプロジェクトの書誌情報を、対応サイトの本のページに表示するChrome用の機能拡張です。
 
 ## 対応サービス
 
