@@ -74,8 +74,13 @@ const parseBook = (book)=>{
   let description = null;
   let descriptionLong = null;
   let tableOfContents = null;
-  if(book.onix.CollateralDetail.SupportingResource instanceof Array){
-    thumbnail = book.onix.CollateralDetail.SupportingResource[0].ResourceVersion.ResourceLink;
+  // console.log(book.onix.CollateralDetail.SupportingResource)
+  if(book.onix.CollateralDetail.SupportingResource
+    && book.onix.CollateralDetail.SupportingResource[0].ResourceVersion[0]
+    && book.onix.CollateralDetail.SupportingResource[0].ResourceVersion[0].ResourceLink
+  ){
+    // console.log(book.onix.CollateralDetail.SupportingResource[0].ResourceVersion[0].ResourceLink)
+    thumbnail = book.onix.CollateralDetail.SupportingResource[0].ResourceVersion[0].ResourceLink;
   }
   // console.log(book.onix.CollateralDetail.TextContent)
   if(book.onix.CollateralDetail.TextContent){
