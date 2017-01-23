@@ -27,7 +27,7 @@ const SITES = [
   {
     url: 'https://calil.jp/book/',
     isbnSelector: '.bookarea',
-    targetElement: document.querySelectorAll('.detailheader')[0],
+    targetElement: document.querySelectorAll('.detailheader')[1],
     insert: 'before'
   },
 ];
