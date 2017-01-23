@@ -179,9 +179,10 @@ const renderBook = (book)=>{
     `;
   }
   content.innerHTML += authorContent;
+  let pubdate = book.pubdate!=='' ?` <span class="openbd_pubdate">(${book.pubdate})</span>` : '';
   content.innerHTML += `
   <h2 class="openbd_header">出版社</h2>
-  <div class="openbd_publisher">${book.publisher} <span class="openbd_pubdate">(${book.pubdate})</span></div>
+  <div class="openbd_publisher">${book.publisher}${pubdate}</div>
   <h2 class="openbd_header">ISBN</h2>
   <div class="openbd_isbn">${book.isbn}</div>
   `;
