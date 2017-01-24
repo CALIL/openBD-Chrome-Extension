@@ -8,6 +8,7 @@
 * 富士通 iLiswing (例: [https://ilisod001.apsel.jp/kurino-lib/wopc/pc/pages/SearchResultList.jsp](https://ilisod001.apsel.jp/kurino-lib/wopc/pc/pages/SearchResultList.jsp))
 * NEC LiCS-Re (例: [http://www.koge-lib.jp/WebOpac/webopac/goto.do](http://www.koge-lib.jp/WebOpac/webopac/goto.do)
 * [Amazon](https://www.amazon.co.jp)
+* [リブライズ](https://librize.com)
 
 ## 導入方法
 

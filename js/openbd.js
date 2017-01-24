@@ -38,6 +38,12 @@ const SITES = [
     targetElement: document.querySelectorAll('.detailheader')[1],
     insert: 'before'
   },
+  {
+    url: 'https://librize.com/items/',
+    isbnSelector: document.querySelectorAll('.book-info li'),
+    targetElement: document.querySelectorAll('.book-info ul')[0],
+    insert: 'after'
+  },
 ];
 
 // ISBNの抽出
