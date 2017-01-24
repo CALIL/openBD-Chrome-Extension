@@ -91,13 +91,13 @@ const parseBook = (book)=>{
     book.onix.CollateralDetail.TextContent.forEach((text)=>{
       // console.log(text)
       if(text.TextType==='02'){
-        description = text.Text;
+        description = text.Text.replace(/\n/g, '<br>');
       }
       if(text.TextType==='03'){
-        descriptionLong = text.Text;
+        descriptionLong = text.Text.replace(/\n/g, '<br>');
       }
       if(text.TextType==='04'){
-        tableOfContents = text.Text;
+        tableOfContents = text.Text.replace(/\n/g, '<br>');
       }
     });
   }
@@ -134,9 +134,9 @@ const parseBook = (book)=>{
     title: title,
     titleYomi: titleYomi,
     authors: authors,
-    description: description.replace(/\n/g, '<br>'),
-    descriptionLong: descriptionLong.replace(/\n/g, '<br>'),
-    tableOfContents: tableOfContents.replace(/\n/g, '<br>'),
+    description: description,
+    descriptionLong: descriptionLong,
+    tableOfContents: tableOfContents,
     isbn: book.summary.isbn,
     publisher: book.summary.publisher,
     pubdate: book.summary.pubdate.replace(/(\d{4})(\d{2})(\d{2})/g , "$1/$2/$3"),
