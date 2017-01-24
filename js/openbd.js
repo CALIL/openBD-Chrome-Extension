@@ -82,6 +82,7 @@ const parseBook = (book)=>{
   let description = null;
   let descriptionLong = null;
   let tableOfContents = null;
+  let maegakinado = null;
   // console.log(book.onix.CollateralDetail.SupportingResource)
   if(book.summary.cover){
     thumbnail = book.summary.cover;
@@ -100,6 +101,9 @@ const parseBook = (book)=>{
         tableOfContents = text.Text.replace(/\n/g, '<br>');
       }
     });
+  }
+  if(book.hanmoto.maegakinado){
+    maegakinado = book.hanmoto.maegakinado.replace(/\n/g, '<br>');
   }
   // 著者
   let parseAuthor = (author)=>{
@@ -137,6 +141,7 @@ const parseBook = (book)=>{
     description: description,
     descriptionLong: descriptionLong,
     tableOfContents: tableOfContents,
+    maegakinado: maegakinado,
     isbn: book.summary.isbn,
     publisher: book.summary.publisher,
     pubdate: book.summary.pubdate.replace(/(\d{4})(\d{2})(\d{2})/g , "$1/$2/$3"),
@@ -184,6 +189,12 @@ const renderBook = (book)=>{
     content.innerHTML += `
     <h2 class="openbd_header">目次</h2>
     <div class="openbd_tableOfContents">${book.tableOfContents}</div>
+    `;
+  }
+  if(book.maegakinado){
+    content.innerHTML += `
+    <h2 class="openbd_header">前書きなど</h2>
+    <div class="openbd_maegakinado">${book.maegakinado}</div>
     `;
   }
   content.innerHTML += authorContent;
