@@ -175,7 +175,7 @@ const renderBook = (book)=>{
   }
 
   if(book.thumbnail){
-    content.innerHTML += `<img src="${book.thumbnail}" />`;
+    content.innerHTML += `<img src="${book.thumbnail}" class="openbd_thumbnail" />`;
   }
   let titleYomi = (book.titleYomi) ? '(' + book.titleYomi + ')' : '';
   content.innerHTML += `
@@ -232,6 +232,9 @@ const renderStyle = ()=>{
     background-color: #ffffff;
     color: #636363;
     border-radius: 0.25em;
+  }
+  .openbd_thumbnail {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
   }
   .openbd_header {
     font-size: 1.25em;
