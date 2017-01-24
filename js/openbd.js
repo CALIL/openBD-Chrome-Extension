@@ -134,9 +134,9 @@ const parseBook = (book)=>{
     title: title,
     titleYomi: titleYomi,
     authors: authors,
-    description: description,
-    descriptionLong: descriptionLong,
-    tableOfContents: tableOfContents,
+    description: description.replace(/\n/g, '<br>'),
+    descriptionLong: descriptionLong.replace(/\n/g, '<br>'),
+    tableOfContents: tableOfContents.replace(/\n/g, '<br>'),
     isbn: book.summary.isbn,
     publisher: book.summary.publisher,
     pubdate: book.summary.pubdate.replace(/(\d{4})(\d{2})(\d{2})/g , "$1/$2/$3"),
@@ -211,7 +211,7 @@ const renderStyle = ()=>{
   .openbd_content {
     font-size: 1em;
     margin: 3em auto;
-    padding: 10px; 
+    padding: 10px;
     background-color: #ffffff;
     color: #636363;
     border-radius: 0.25em;
